@@ -69,5 +69,18 @@ namespace mini.test
             Assert.Equal(204, status.StatusCode);
             
         }
+        [Fact]
+        public async void GetAllAuthors_ShouldReturn500()
+        {
+            _authorRepo
+            .Setup(x =>x.getAllAuthors())
+            .ReturnsAsync(() => null);
+            
+            var result = await _sut.getAllauthors();
+
+            var status = (IStatusCodeActionResult)result;
+            Assert.Equal(500, status.StatusCode);
+        }
+
     }
 }

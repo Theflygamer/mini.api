@@ -54,11 +54,22 @@ namespace mini.api.Controllers
         [HttpPost]
         public async Task<ActionResult<Author>> createAuthor(Author author)
         {
-            Abcontext _context = new Abcontext();
 
-            _context.Author.Add(author);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction("GetAuthor", new { id = author.AuthorID }, author);
+            try
+            {
+                var response = await repo.createAuthor(author);
+                if (response != 1)
+                {
+                    return Problem("Du har jokket i spinaten");
+                }
+                return Ok(response); // Ok kommer fra actionresult
+            }
+             
+            catch (Exception fejl)
+            {
+
+                return Problem(fejl.Message + "vores eget...");
+            }
         }
 
         [HttpGet("flødebole")]
